@@ -1,31 +1,53 @@
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../../components/EditScreenInfo';
-import { Text, View } from '../../components/Themed';
+import { StyleSheet, View, FlatList, Pressable } from 'react-native';
+import Tweet from '../../components/Tweet';
+import tweets from '../../assets/data/tweets';
+import { Entypo } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 
 export default function TabOneScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+    <View style={styles.page}>
+      <FlatList data={tweets} renderItem={({ item }) => <Tweet tweet={item} />} />
+
+      <Pressable>
+        <Link href="/new-tweet" asChild>
+          <Entypo
+            name="plus"
+            size={25}
+            color="white"
+            style={styles.floatingButton}
+          />
+        </Link>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  page: {
+    flex:1,
+    backgroundColor: 'white', 
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  floatingButton: {
+    backgroundColor: '#1C9BF0',
+
+    borderRadius: 25,
+    padding: 15,
+
+    position: 'absolute',
+    right: 15,
+    bottom: 15,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+
+    overflow: 'hidden',
   },
 });
