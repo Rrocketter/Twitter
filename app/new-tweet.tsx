@@ -1,5 +1,5 @@
-import { View, StyleSheet, Text, Image, TextInput, Pressable } from "react-native";
-import { Link } from "expo-router";
+import { View, StyleSheet, Text, Image, TextInput, Pressable, SafeAreaView } from "react-native";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 
 const user = {
@@ -10,14 +10,19 @@ const user = {
 }
 
 export default function NewTweet() {
-    const [text, setText] = useState();
+    const [text, setText] = useState('');
+    const router = useRouter();
     
     
     const onTweetPress = () => {
-        console.warn("Posting the tweet!")
+        console.warn("Posting tweet:", text)
+
+        setText('')
+        router.back()
     }
 
     return (
+        <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
         <View style={styles.container}>
             <View style={styles.buttonContainer}>
                 <Link href="../" style={styles.cancelButton}>Cancel</Link>
@@ -32,12 +37,14 @@ export default function NewTweet() {
                 <Image src={user.image} style={styles.userImage} />
                 <TextInput 
                     value={text}
+                    onChangeText = {setText}
                     placeholder="What's happening?" 
                     multiline 
                     numberOfLines={5} 
                     style={{ flex:1 }}/>
             </View>
         </View>
+        </SafeAreaView>
     )
 } 
  
