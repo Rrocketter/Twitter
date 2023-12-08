@@ -1,7 +1,7 @@
 import {Text} from 'react-native';
 import React from 'react'
-import Tweet from '../../components/Tweet';
-import tweets from '../../assets/data/tweets';
+import Tweet from '../../../../../components/Tweet';
+import tweets from '../../../../../assets/data/tweets';
 import {useRoute} from '@react-navigation/native';
 
 type RouteParams = {

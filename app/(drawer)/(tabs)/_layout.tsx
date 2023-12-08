@@ -4,6 +4,11 @@ import { Pressable, useColorScheme, Image } from 'react-native';
 
 import Colors from '../../../constants/Colors';
 
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: 'two',
+};
+
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
@@ -18,12 +23,12 @@ function AvatarHeader() {
   const navigation = useNavigation();
   return (
     <Pressable onPress={() => navigation.openDrawer()}>
-      <Image 
-        src="https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.png" 
-        style={{ width: 35, aspectRatio: 1, borderRadius: 40, marginLeft: 10 }}
+      <Image
+        src="https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.png"
+        style={{ width: 30, aspectRatio: 1, borderRadius: 40, marginLeft: 10 }}
       />
     </Pressable>
-  )
+  );
 }
 
 export default function TabLayout() {
@@ -33,11 +38,12 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-      }}>
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="feed"
         options={{
-          title: 'My Feed',
+          title: 'Feed',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
@@ -53,9 +59,10 @@ export default function TabLayout() {
               </Pressable>
             </Link>
           ),
-          headerLeft: () => <AvatarHeader />
+          headerLeft: () => <AvatarHeader />,
         }}
       />
+
       <Tabs.Screen
         name="two"
         options={{
