@@ -15,15 +15,18 @@ export default function NewTweet() {
     const [text, setText] = useState('');
     const router = useRouter();
 
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
 
     const { mutateAsync, isLoading, isError, error } = useMutation({
-        mutationFn: createTweet,
-        onSuccess: () => {
-            //queryClient.invalidateQueries({ queryKey: ['tweets']})
-            queryClient.setQueriesData
-        }
-    })
+      mutationFn: createTweet,
+      onSuccess: (data) => {
+        // queryClient.invalidateQueries({ queryKey: ['tweets'] })
+        queryClient.setQueriesData(['tweets'], (existingTweets) => {
+          return [data, ...existingTweets];
+        });
+      },
+    });
+  
     
     
     const onTweetPress = async () => {
