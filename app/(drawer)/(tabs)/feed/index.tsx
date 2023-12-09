@@ -9,47 +9,31 @@ import { useQuery } from '@tanstack/react-query';
 
 
 export default function FeedScreen() {
-  // const [ tweets, setTweets ] = useState([])
-
-  // useEffect(() => {
-  //   const fetchTweets = async () => {
-  //     const response = await listTweets()
-  //     setTweets(response)
-  //   }
-
-
-  //   fetchTweets() 
-  // }, [])
-
-  //using new tanscrippt libary query
-
-  const { data, isLoading, error} = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['tweets'],
     queryFn: listTweets,
-  })
+  });
 
   if (isLoading) {
-    return <ActivityIndicator />
+    return <ActivityIndicator />;
   }
 
   if (error) {
-    return <Text>{error.message}</Text>
+    return <Text>{error.message}</Text>;
   }
 
   return (
     <View style={styles.page}>
       <FlatList data={data} renderItem={({ item }) => <Tweet tweet={item} />} />
 
-      <Pressable>
-        <Link href="/new-tweet" asChild>
-          <Entypo
-            name="plus"
-            size={25}
-            color="white"
-            style={styles.floatingButton}
-          />
-        </Link>
-      </Pressable>
+      <Link href="/new-tweet" asChild>
+        <Entypo
+          name="plus"
+          size={24}
+          color="white"
+          style={styles.floatingButton}
+        />
+      </Link>
     </View>
   );
 }

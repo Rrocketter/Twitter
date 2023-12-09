@@ -2,16 +2,19 @@ import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-nativ
 import React, {useState} from 'react'
 import { useGlobalSearchParams } from 'expo-router'
 import { authenticate } from '../../lib/api/auth'
+import { useAuth } from '../../context/AuthContext'
 
-const SignIn = () => {
+const Authenticate = () => {
   const [code, setCode] = useState('')
   const { email } = useGlobalSearchParams()
+
+  const { setAuthToken } = useAuth()
 
   const onSignin = async () => {
     if (typeof email !== 'string') { return }
     try {
         const response = await authenticate({ email, emailToken: code })
-        console.log(response)
+        setAuthToken(response.authToken)
     } catch (e) {
         Alert.alert('Error',"Emai Code doesn't Match")
     }
@@ -68,4 +71,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default SignIn
+export default Authenticate
