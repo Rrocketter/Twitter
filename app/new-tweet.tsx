@@ -1,10 +1,12 @@
-import { View, StyleSheet, Text, Image, TextInput, Pressable, SafeAreaView } from "react-native";
+import { View, StyleSheet, Text, Image, TextInput, Pressable, SafeAreaView, ActivityIndicator } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createTweet } from "../lib/api/tweets";
 
 const user = {
     id: '1',
-    name: 'Vadim Savin',
+    name: 'Rahul Gupta',
     username: 'webdevvadim',
     image: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg',
 }
@@ -12,14 +14,28 @@ const user = {
 export default function NewTweet() {
     const [text, setText] = useState('');
     const router = useRouter();
-    
-    
-    const onTweetPress = () => {
-        console.warn("Posting tweet:", text)
 
-        setText('')
-        router.back()
-    }
+    const queryClient = useQueryClient()
+
+    const { mutateAsync, isLoading, isError, error } = useMutation({
+        mutationFn: createTweet,
+        onSuccess: () => {
+            //queryClient.invalidateQueries({ queryKey: ['tweets']})
+            queryClient.setQueriesData
+        }
+    })
+    
+    
+    const onTweetPress = async () => {
+        try {
+          await mutateAsync({ content: text });
+    
+          setText('');
+          router.back();
+        } catch (e) {
+          console.log('Error:', e.message); 
+        }
+      };
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -27,6 +43,8 @@ export default function NewTweet() {
             <View style={styles.buttonContainer}>
                 <Link href="../" style={styles.cancelButton}>Cancel</Link>
             
+                {isLoading && <ActivityIndicator />} 
+                {/* error with isLoading, but useless and irrelevant ahhh */}
 
                 <Pressable onPress={onTweetPress} style={styles.button}>
                     <Text style={styles.buttonText}>Tweet</Text>
@@ -42,7 +60,9 @@ export default function NewTweet() {
                     multiline 
                     numberOfLines={5} 
                     style={{ flex:1 }}/>
-            </View>
+            </View> 
+
+            {isError && <Text>Error: {error.message}</Text>}
         </View>
         </SafeAreaView>
     )

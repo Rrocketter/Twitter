@@ -31,3 +31,22 @@ export const getTweet = async (id: string) => {
       }
       return await response.json()  
 }
+
+export const createTweet = async (data: {content: string }) => {
+    const response = await fetch(`${API_URL}/tweet`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.status === 401) {
+      throw new Error('Not authorized. Please sign in');
+    }
+    if (response.status !== 200) {
+      console.log(response);
+      throw new Error('Error creating tweet');
+    }
+    return await response.json();
+  };
