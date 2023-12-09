@@ -1,5 +1,12 @@
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
+import { 
+    PropsWithChildren, 
+    createContext, 
+    useContext, 
+    useEffect, 
+    useState 
+} from 'react';
 import { useRouter, useSegments } from 'expo-router';
+import * as SecureStore from 'expo-secure-store' //means to import everything from it
 
 const AuthContext = createContext({})
 
@@ -20,8 +27,24 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         }
     }, [segments, authToken])
 
+    useEffect(() => {
+        const loadAuthToken = async () => {
+            const response = await SecureStore.getItemAsync('authToken')
+            if (response) {
+                setAuthToken(response)
+            }
+            setAuthToken(response)
+        }
+        loadAuthToken()
+    }, [])
+
+    const updateAuthToken = async (newToken: string) => {
+        await SecureStore.setItemAsync('authToken', newToken);
+        setAuthToken(newToken);
+      };
+
     return (
-        <AuthContext.Provider value={{authToken, setAuthToken}}>
+        <AuthContext.Provider value={{authToken, updateAuthToken}}>
             {children}
         </AuthContext.Provider>
     )
