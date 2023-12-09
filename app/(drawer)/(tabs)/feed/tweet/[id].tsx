@@ -3,7 +3,7 @@ import React from 'react'
 import Tweet from '../../../../../components/Tweet';
 import {useRoute} from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
-import { getTweet } from '../../../../../lib/api/tweets';
+import { useTweetsApi } from '../../../../../lib/api/tweets';
 
 type RouteParams = {  
   id: string;
@@ -13,6 +13,8 @@ export default function TweetScreen() {
   const route = useRoute();
   const params = route.params as RouteParams; // Cast params to RouteParams
   const {id} = params;
+
+  const {getTweet} = useTweetsApi();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['tweet', id],

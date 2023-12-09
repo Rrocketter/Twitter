@@ -2,7 +2,7 @@ import { View, StyleSheet, Text, Image, TextInput, Pressable, SafeAreaView, Acti
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createTweet } from "../lib/api/tweets";
+import { useTweetsApi } from "../lib/api/tweets";
 
 const user = {
     id: '1',
@@ -14,6 +14,8 @@ const user = {
 export default function NewTweet() {
     const [text, setText] = useState('');
     const router = useRouter();
+    
+    const { createTweet } = useTweetsApi();
 
     const queryClient = useQueryClient();
 
