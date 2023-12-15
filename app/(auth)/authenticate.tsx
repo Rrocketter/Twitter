@@ -24,7 +24,7 @@ const Authenticate = () => {
     <View style={styles.container}>
       <Text style={styles.label}>Confirm your email & account</Text>
       
-      <TextInput placeholder="Email" style={styles.input} onChangeText={setCode}/>
+      <TextInput placeholder="Code: " style={styles.input} onChangeText={setCode}/>
 
       <Pressable style={styles.button} onPress={onSignin}>
         <Text style={styles.buttonText}>Cconfirm</Text>
